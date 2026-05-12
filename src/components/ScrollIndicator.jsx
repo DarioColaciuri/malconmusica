@@ -1,11 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function ScrollIndicator() {
   const indicatorRef = useRef()
   const textRef = useRef()
   
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    
+    if (prefersReducedMotion) return
+    
     const ctx = gsap.context(() => {
       gsap.to(indicatorRef.current, {
         y: 10,
@@ -47,9 +54,10 @@ export default function ScrollIndicator() {
   }, [])
   
   return (
-    <div 
+    <button 
       ref={indicatorRef}
-      className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+      aria-label="Desplazarse hacia abajo"
+      className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-transparent border-none cursor-pointer"
     >
       <span 
         ref={textRef}
@@ -58,8 +66,8 @@ export default function ScrollIndicator() {
         Scroll
       </span>
       <div className="w-6 h-10 rounded-full border-2 border-malcon-gray/30 flex justify-center pt-2">
-        <div className="w-1.5 h-3 bg-malcon-red rounded-full animate-bounce-slow" />
+        <div className="w-1.5 h-3 bg-malcon-red rounded-full" />
       </div>
-    </div>
+    </button>
   )
 }

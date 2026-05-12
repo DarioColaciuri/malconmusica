@@ -12,7 +12,18 @@ export default function Hero() {
   const logoRef = useRef()
   
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        const letters = titleRef.current.querySelectorAll('span')
+        gsap.set(letters, { opacity: 1, y: 0, scale: 1 })
+        gsap.set(subtitleRef.current, { opacity: 1, y: 0 })
+        gsap.set(logoRef.current, { opacity: 1, scale: 1 })
+        gsap.set(heroRef.current, { opacity: 1, y: 0 })
+        return
+      }
+      
       const letters = titleRef.current.querySelectorAll('span')
       
       gsap.to(letters, {
@@ -61,6 +72,7 @@ export default function Hero() {
   return (
     <section 
       ref={heroRef}
+      aria-labelledby="hero-title"
       className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-malcon-bg pointer-events-none" />
@@ -71,12 +83,15 @@ export default function Hero() {
       >
         <img 
           src="/malcon.png" 
-          alt="MALCON" 
+          alt="MALCON - Banda de Funk, Retro y Hits de Buenos Aires"
+          width="128"
+          height="128"
           className="w-32 h-32 object-contain filter drop-shadow-lg"
         />
       </div>
       
       <h1 
+        id="hero-title"
         ref={titleRef}
         className="hero-title text-[12vw] leading-none font-bebas text-transparent bg-clip-text bg-gradient-to-b from-malcon-orange-light via-malcon-orange-dark to-malcon-red text-glow tracking-wider"
         style={{ WebkitTextStroke: '2px rgba(193, 39, 45, 0.8)' }}
@@ -99,7 +114,7 @@ export default function Hero() {
         ref={subtitleRef}
         className="mt-8 text-xl md:text-2xl font-inter text-malcon-gray/80 tracking-[0.3em] uppercase opacity-0"
       >
-        Electronic / Cinematic / Experimental
+        Funk / Retro / Hits
       </p>
       
       <ScrollIndicator />

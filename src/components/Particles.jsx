@@ -11,6 +11,7 @@ const COLORS = ['#C1272D', '#E46314', '#FBA01D', '#FFA81F']
 export default function Particles({ scrollProgress }) {
   const pointsRef = useRef()
   const materialRef = useRef()
+  const animationRef = useRef(null)
   
   const { positions, velocities, colors, sizes } = useMemo(() => {
     const positions = new Float32Array(PARTICLE_COUNT * 3)
@@ -51,7 +52,11 @@ export default function Particles({ scrollProgress }) {
   const targetPositions = useRef(positions.slice())
   
   useEffect(() => {
-    if (!scrollProgress) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    
+    if (prefersReducedMotion || !scrollProgress) {
+      return
+    }
     
     const progress = scrollProgress.current
     
@@ -149,6 +154,8 @@ export default function Particles({ scrollProgress }) {
     targetPositions.current = newTargets
   }, [scrollProgress])
   
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  
   useFrame((state) => {
     if (!pointsRef.current) return
     
@@ -163,14 +170,20 @@ export default function Particles({ scrollProgress }) {
       const dy = targetPositions.current[i3 + 1] - posArray[i3 + 1]
       const dz = targetPositions.current[i3 + 2] - posArray[i3 + 2]
       
-      posArray[i3] += dx * 0.02 + velocities[i3] + Math.sin(time + i) * 0.002
-      posArray[i3 + 1] += dy * 0.02 + velocities[i3 + 1] + Math.cos(time + i) * 0.002
-      posArray[i3 + 2] += dz * 0.02 + velocities[i3 + 2] + Math.sin(time * 0.5 + i) * 0.002
+      if (prefersReducedMotion) {
+        posArray[i3] = targetPositions.current[i3]
+        posArray[i3 + 1] = targetPositions.current[i3 + 1]
+        posArray[i3 + 2] = targetPositions.current[i3 + 2]
+      } else {
+        posArray[i3] += dx * 0.02 + velocities[i3] + Math.sin(time + i) * 0.002
+        posArray[i3 + 1] += dy * 0.02 + velocities[i3 + 1] + Math.cos(time + i) * 0.002
+        posArray[i3 + 2] += dz * 0.02 + velocities[i3 + 2] + Math.sin(time * 0.5 + i) * 0.002
+      }
     }
     
     pointsRef.current.geometry.attributes.position.needsUpdate = true
     
-    if (materialRef.current) {
+    if (materialRef.current && !prefersReducedMotion) {
       materialRef.current.opacity = 0.6 + Math.sin(time * 0.5) * 0.2
     }
   })

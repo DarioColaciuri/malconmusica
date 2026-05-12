@@ -9,13 +9,22 @@ export default function App() {
   
   return (
     <div className="relative bg-malcon-bg">
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-malcon-red focus:text-white focus:rounded-lg"
+      >
+        Saltar al contenido
+      </a>
+      
       <div className="noise-overlay" />
       
       <Scene ref={scrollProgressRef} />
       
-      <main className="relative z-10">
+      <main id="main-content" className="relative z-10">
         <Hero />
+        <div className="fixed bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-malcon-bg to-transparent pointer-events-none z-20" />
         <NewRelease />
+        <div className="fixed top-0 left-0 right-0 h-40 bg-gradient-to-b from-malcon-bg to-transparent pointer-events-none z-20" />
         <Socials />
       </main>
     </div>
