@@ -124,7 +124,7 @@ export default function NewRelease() {
               >
                 <img 
                   src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02ee84c90a74958ef6db8ed7af" 
-                  alt="Maldita noche - Yo te diré - MALCON"
+                  alt="Maldita noche - Yo te dire - MALCON"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -132,7 +132,7 @@ export default function NewRelease() {
                 </div>
               </a>
               <div>
-                <h3 className="text-xl sm:text-2xl font-bebas text-malcon-gray tracking-wide">Maldita noche - Yo te diré</h3>
+                <h3 className="text-xl sm:text-2xl font-bebas text-malcon-gray tracking-wide">Maldita noche - Yo te dire</h3>
                 <p className="text-malcon-gray/60 text-xs sm:text-sm mt-1">MALCON • 2026</p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function NewRelease() {
               >
                 <img 
                   src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020f6d02506965b49a35d5c56e" 
-                  alt="Dejaría Todo / Hasta Que Me Olvides / Vuelve - MALCON"
+                  alt="Dejaria Todo / Hasta Que Me Olvides / Vuelve - MALCON"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -181,7 +181,7 @@ export default function NewRelease() {
                 </div>
               </a>
               <div>
-                <h3 className="text-xl sm:text-2xl font-bebas text-malcon-gray tracking-wide">Dejaría Todo / Hasta Que Me Olvides / Vuelve</h3>
+                <h3 className="text-xl sm:text-2xl font-bebas text-malcon-gray tracking-wide">Dejaria Todo / Hasta Que Me Olvides / Vuelve</h3>
                 <p className="text-malcon-gray/60 text-xs sm:text-sm mt-1">MALCON • 2026</p>
               </div>
             </div>

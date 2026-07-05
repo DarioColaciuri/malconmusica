@@ -97,7 +97,7 @@ export default function Bio() {
       
       <div ref={contentRef} className="relative z-10 max-w-2xl text-center space-y-4 sm:space-y-6 px-0 sm:px-4">
         <p className="text-malcon-gray/80 text-base sm:text-lg leading-relaxed font-inter">
-          MALCON es una banda de funk y retro covers formada en 2022, integrada originalmente por Cony Langone y Malu Vázquez en las voces, junto a Darío Colaciuri en los arreglos y Lautaro Schillaci en la batería. Con el paso de los años, la banda fue evolucionando e incorporó a Agus Sol en la voz y a Diego Sernaque en guitarra, consolidando una propuesta musical con identidad propia.
+          MALCON es una banda de funk y retro covers formada en 2022, integrada originalmente por Cony Langone y Malu Vazquez en las voces, junto a Dario Colaciuri en los arreglos y Lautaro Schillaci en la batería. Con el paso de los años, la banda fue evolucionando e incorporó a Agus Sol en la voz y a Diego Sernaque en guitarra, consolidando una propuesta musical con identidad propia.
         </p>
         <p className="text-malcon-gray/80 text-base sm:text-lg leading-relaxed font-inter">
           Actualmente, MALCON se presenta en distintos escenarios de Capital Federal reinterpretando clásicos y hits muy conocidos, pero llevándolos a un terreno completamente distinto. Sus versiones se caracterizan por rearmonizaciones y arreglos influenciados por el jazz fusión y el funk, transformando canciones familiares en experiencias frescas, dinámicas y sorprendentes para el público.
