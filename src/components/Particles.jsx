@@ -10,7 +10,7 @@ const PARTICLE_COUNT = 800
 const COLORS = ['#C1272D', '#E46314', '#FBA01D', '#FFA81F']
 
 function createStarTexture() {
-  const size = 64
+  const size = 128
   const canvas = document.createElement('canvas')
   canvas.width = size
   canvas.height = size
@@ -18,11 +18,11 @@ function createStarTexture() {
   
   const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
-  gradient.addColorStop(0.05, 'rgba(255, 255, 255, 0.95)')
-  gradient.addColorStop(0.15, 'rgba(255, 220, 180, 0.7)')
-  gradient.addColorStop(0.3, 'rgba(255, 180, 100, 0.3)')
-  gradient.addColorStop(0.5, 'rgba(255, 100, 50, 0.1)')
-  gradient.addColorStop(0.7, 'rgba(100, 30, 10, 0.02)')
+  gradient.addColorStop(0.02, 'rgba(255, 255, 255, 0.95)')
+  gradient.addColorStop(0.08, 'rgba(255, 240, 200, 0.6)')
+  gradient.addColorStop(0.2, 'rgba(255, 180, 100, 0.2)')
+  gradient.addColorStop(0.4, 'rgba(255, 100, 50, 0.05)')
+  gradient.addColorStop(0.65, 'rgba(50, 20, 10, 0.01)')
   gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
   
   ctx.fillStyle = gradient
@@ -177,6 +177,24 @@ export default function Particles({ scrollProgress }) {
   
   const texture = useMemo(() => new CanvasTexture(starTexture), [])
   
+  const glowTexture = useMemo(() => {
+    const c = document.createElement('canvas')
+    c.width = 128
+    c.height = 128
+    const ctx = c.getContext('2d')
+    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+    g.addColorStop(0, 'rgba(255, 255, 255, 0.6)')
+    g.addColorStop(0.1, 'rgba(255, 200, 150, 0.3)')
+    g.addColorStop(0.35, 'rgba(255, 120, 60, 0.08)')
+    g.addColorStop(0.7, 'rgba(40, 10, 5, 0.01)')
+    g.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, 128, 128)
+    return new CanvasTexture(c)
+  }, [])
+  
+  const glowRef = useRef()
+  
   useFrame((state) => {
     if (!pointsRef.current) return
     
@@ -208,44 +226,80 @@ export default function Particles({ scrollProgress }) {
     pointsRef.current.geometry.attributes.position.needsUpdate = true
     pointsRef.current.geometry.attributes.size.needsUpdate = true
     
+    if (glowRef.current) {
+      const glowPositions = glowRef.current.geometry.attributes.position.array
+      for (let i = 0; i < PARTICLE_COUNT * 3; i++) {
+        glowPositions[i] = posArray[i]
+      }
+      glowRef.current.geometry.attributes.position.needsUpdate = true
+    }
+    
     if (materialRef.current && !prefersReducedMotion) {
       materialRef.current.opacity = 0.55 + Math.sin(time * 0.5) * 0.15
     }
   })
   
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={PARTICLE_COUNT}
-          array={positions}
-          itemSize={3}
+    <>
+      <points ref={glowRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={PARTICLE_COUNT}
+            array={new Float32Array(positions)}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={PARTICLE_COUNT}
+            array={colors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          map={glowTexture}
+          size={1.8}
+          vertexColors
+          transparent
+          opacity={0.25}
+          sizeAttenuation
+          blending={2}
+          depthWrite={false}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={PARTICLE_COUNT}
-          array={colors}
-          itemSize={3}
+      </points>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={PARTICLE_COUNT}
+            array={positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={PARTICLE_COUNT}
+            array={colors}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-size"
+            count={PARTICLE_COUNT}
+            array={sizes}
+            itemSize={1}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          ref={materialRef}
+          map={texture}
+          size={0.8}
+          vertexColors
+          transparent
+          opacity={0.7}
+          sizeAttenuation
+          blending={2}
+          depthWrite={false}
         />
-        <bufferAttribute
-          attach="attributes-size"
-          count={PARTICLE_COUNT}
-          array={sizes}
-          itemSize={1}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        ref={materialRef}
-        map={texture}
-        size={0.8}
-        vertexColors
-        transparent
-        opacity={0.7}
-        sizeAttenuation
-        blending={2}
-        depthWrite={false}
-      />
-    </points>
+      </points>
+    </>
   )
 }
