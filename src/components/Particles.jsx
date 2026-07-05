@@ -1,5 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { CanvasTexture } from 'three'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -8,10 +9,34 @@ gsap.registerPlugin(ScrollTrigger)
 const PARTICLE_COUNT = 800
 const COLORS = ['#C1272D', '#E46314', '#FBA01D', '#FFA81F']
 
+function createStarTexture() {
+  const size = 64
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')
+  
+  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
+  gradient.addColorStop(0.05, 'rgba(255, 255, 255, 0.95)')
+  gradient.addColorStop(0.15, 'rgba(255, 220, 180, 0.7)')
+  gradient.addColorStop(0.3, 'rgba(255, 180, 100, 0.3)')
+  gradient.addColorStop(0.5, 'rgba(255, 100, 50, 0.1)')
+  gradient.addColorStop(0.7, 'rgba(100, 30, 10, 0.02)')
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
+  
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, size, size)
+  
+  return canvas
+}
+
+const starTexture = createStarTexture()
+
 export default function Particles({ scrollProgress }) {
   const pointsRef = useRef()
   const materialRef = useRef()
-  const animationRef = useRef(null)
+  const sizesRef = useRef()
   
   const { positions, velocities, colors, sizes } = useMemo(() => {
     const positions = new Float32Array(PARTICLE_COUNT * 3)
@@ -43,20 +68,20 @@ export default function Particles({ scrollProgress }) {
       colors[i3 + 1] = g
       colors[i3 + 2] = b
       
-      sizes[i] = Math.random() * 0.15 + 0.05
+      sizes[i] = Math.random() * 0.8 + 0.2
     }
     
     return { positions, velocities, colors, sizes }
   }, [])
+  
+  sizesRef.current = sizes
   
   const targetPositions = useRef(positions.slice())
   
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     
-    if (prefersReducedMotion || !scrollProgress) {
-      return
-    }
+    if (prefersReducedMotion || !scrollProgress) return
     
     const progress = scrollProgress.current
     
@@ -97,7 +122,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = targetPositions.current[i3 + 1] + r2 * 0.1
           newTargets[i3 + 2] = targetPositions.current[i3 + 2] + r3 * 0.1
           break
-          
         case 'circular':
           const angle = t * Math.PI * 2 * 8 + Math.sin(progress * 10) * 2
           const circleRadius = targetRadius + Math.sin(t * 20 + progress * 5) * 2
@@ -105,7 +129,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = Math.sin(angle) * circleRadius * 0.6
           newTargets[i3 + 2] = Math.sin(t * Math.PI * 4) * 3
           break
-          
         case 'wave':
           const waveX = (t - 0.5) * 20
           const waveY = Math.sin(t * 20 + progress * 8) * 4
@@ -114,7 +137,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = waveY
           newTargets[i3 + 2] = waveZ
           break
-          
         case 'rings':
           const ringCount = 3
           const ringIndex = i % ringCount
@@ -124,7 +146,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = Math.sin(ringAngle * 2) * 2
           newTargets[i3 + 2] = Math.sin(ringAngle) * ringR
           break
-          
         case 'organic':
           const noiseX = Math.sin(t * 10 + progress * 3) * 5
           const noiseY = Math.cos(t * 8 + progress * 2) * 4
@@ -133,7 +154,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = noiseY + (Math.random() - 0.5) * 2
           newTargets[i3 + 2] = noiseZ + (Math.random() - 0.5) * 2
           break
-          
         case 'dissolve':
           const dissolveFactor = (progress - 0.9) * 10
           const expandX = (Math.random() - 0.5) * targetRadius * dissolveFactor
@@ -143,7 +163,6 @@ export default function Particles({ scrollProgress }) {
           newTargets[i3 + 1] = targetPositions.current[i3 + 1] + expandY
           newTargets[i3 + 2] = targetPositions.current[i3 + 2] + expandZ
           break
-          
         default:
           newTargets[i3] = targetPositions.current[i3]
           newTargets[i3 + 1] = targetPositions.current[i3 + 1]
@@ -156,12 +175,14 @@ export default function Particles({ scrollProgress }) {
   
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   
+  const texture = useMemo(() => new CanvasTexture(starTexture), [])
+  
   useFrame((state) => {
     if (!pointsRef.current) return
     
     const time = state.clock.elapsedTime
-    
     const posArray = pointsRef.current.geometry.attributes.position.array
+    const sizeArray = pointsRef.current.geometry.attributes.size.array
     
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const i3 = i * 3
@@ -179,12 +200,16 @@ export default function Particles({ scrollProgress }) {
         posArray[i3 + 1] += dy * 0.02 + velocities[i3 + 1] + Math.cos(time + i) * 0.002
         posArray[i3 + 2] += dz * 0.02 + velocities[i3 + 2] + Math.sin(time * 0.5 + i) * 0.002
       }
+      
+      const twinkle = 0.5 + 0.5 * Math.sin(time * 3 + i * 0.7) * Math.cos(time * 1.7 + i * 0.3)
+      sizeArray[i] = sizesRef.current[i] * (0.4 + twinkle * 0.6)
     }
     
     pointsRef.current.geometry.attributes.position.needsUpdate = true
+    pointsRef.current.geometry.attributes.size.needsUpdate = true
     
     if (materialRef.current && !prefersReducedMotion) {
-      materialRef.current.opacity = 0.6 + Math.sin(time * 0.5) * 0.2
+      materialRef.current.opacity = 0.55 + Math.sin(time * 0.5) * 0.15
     }
   })
   
@@ -212,10 +237,11 @@ export default function Particles({ scrollProgress }) {
       </bufferGeometry>
       <pointsMaterial
         ref={materialRef}
-        size={0.15}
+        map={texture}
+        size={0.8}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.7}
         sizeAttenuation
         blending={2}
         depthWrite={false}
