@@ -79,14 +79,14 @@ export default function Hero() {
       
       <div 
         ref={logoRef}
-        className="mb-8 opacity-0 scale-50"
+        className="mb-6 sm:mb-8 opacity-0 scale-50"
       >
         <img 
           src="/malcon.png" 
           alt="MALCON - Banda de Funk, Retro y Hits de Buenos Aires"
-          width="128"
-          height="128"
-          className="w-32 h-32 object-contain filter drop-shadow-lg"
+          width="96"
+          height="96"
+          className="w-24 h-24 sm:w-32 sm:h-32 object-contain filter drop-shadow-lg"
         />
       </div>
       
@@ -112,7 +112,7 @@ export default function Hero() {
       
       <p 
         ref={subtitleRef}
-        className="mt-8 text-xl md:text-2xl font-inter text-malcon-gray/80 tracking-[0.3em] uppercase opacity-0"
+        className="mt-6 sm:mt-8 text-base sm:text-xl md:text-2xl font-inter text-malcon-gray/80 tracking-[0.2em] sm:tracking-[0.3em] uppercase opacity-0"
       >
         Funk / Retro / Hits
       </p>

@@ -57,13 +57,13 @@ export default function ScrollIndicator() {
     <button 
       ref={indicatorRef}
       aria-label="Desplazarse hacia abajo"
-      className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-transparent border-none cursor-pointer"
+      className="absolute bottom-16 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3 bg-transparent border-none cursor-pointer"
     >
       <span 
         ref={textRef}
         className="text-xs text-malcon-gray/60 tracking-[0.3em] uppercase"
       >
-        Scroll
+        Bajá
       </span>
       <div className="w-6 h-10 rounded-full border-2 border-malcon-gray/30 flex justify-center pt-2">
         <div className="w-1.5 h-3 bg-malcon-red rounded-full" />
