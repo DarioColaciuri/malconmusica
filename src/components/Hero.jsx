@@ -108,6 +108,7 @@ export default function Hero() {
             {letter}
           </span>
         ))}
+        <span className="sr-only"> - Funk / Retro / Hits - Banda de Buenos Aires</span>
       </h1>
       
       <p 
