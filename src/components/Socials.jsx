@@ -39,6 +39,12 @@ const AudiomackIcon = ({ className }) => (
   </svg>
 )
 
+const AppleMusicIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M18.85 6.65V3.65C18.85 3.3 18.7 3 18.35 2.85C16.75 1.95 14.45 1.5 12.15 1.5C9.85 1.5 8.55 2.05 7.5 2.85C7.2 3.05 7 3.3 7 3.65V17.45C6.1 16.95 5.1 16.65 4 16.65C1.8 16.65 0 17.85 0 19.35S1.8 22.05 4 22.05S8 20.85 8 19.35V8.05C9.3 7.35 10.6 7 12.15 7C13.7 7 15 7.35 16.2 8.05V14.5C15.3 14 14.3 13.7 13.2 13.7C11 13.7 9.2 14.9 9.2 16.4S11 19.1 13.2 19.1S17.2 17.9 17.2 16.4V6.65H18.85Z" />
+  </svg>
+)
+
 const DeezerIcon = ({ className }) => (
   <svg viewBox="0 0 97.75 97.75" fill="currentColor" className={className} aria-hidden="true">
     <path d="M48.875,0C21.883,0,0,21.882,0,48.875S21.883,97.75,48.875,97.75S97.75,75.868,97.75,48.875S75.867,0,48.875,0z M25.676,69.248H12.365v-4.033h13.311V69.248z M25.676,64.006H12.365V59.97h13.311V64.006z M25.676,58.762H12.365v-4.035h13.311V58.762z M25.676,53.516H12.365v-4.033h13.311V53.516z M25.676,48.271H12.365v-4.034h13.311V48.271z M40.604,69.248H27.291v-4.033h13.313V69.248z M40.604,64.006H27.291V59.97h13.313V64.006z M40.604,58.762H27.291v-4.035h13.313V58.762z M55.531,69.248H42.219v-4.033h13.313L55.531,69.248L55.531,69.248z M55.531,64.006H42.219V59.97h13.313L55.531,64.006L55.531,64.006z M55.531,58.762H42.219v-4.035h13.313L55.531,58.762L55.531,58.762z M55.531,53.516H42.219v-4.033h13.313L55.531,53.516L55.531,53.516z M55.531,48.271H42.219v-4.034h13.313L55.531,48.271L55.531,48.271z M55.531,43.026H42.219v-4.034h13.313L55.531,43.026L55.531,43.026z M55.531,37.783H42.219v-4.035h13.313L55.531,37.783L55.531,37.783z M70.457,69.248H57.145v-4.033h13.313L70.457,69.248L70.457,69.248z M70.457,64.006H57.145V59.97h13.313L70.457,64.006L70.457,64.006z M70.457,58.762H57.145v-4.035h13.313L70.457,58.762L70.457,58.762z M70.457,53.516H57.145v-4.033h13.313L70.457,53.516L70.457,53.516z M70.457,48.271H57.145v-4.034h13.313L70.457,48.271L70.457,48.271z M85.385,69.248H72.072v-4.033h13.312V69.248z M85.385,64.006H72.072V59.97h13.312V64.006z M85.385,58.759H72.072v-4.034h13.312V58.759z M85.385,53.516H72.072V49.48h13.312V53.516z M85.385,48.271H72.072v-4.037h13.312V48.271z M85.385,43.025H72.072v-4.033h13.312V43.025z M85.385,37.78H72.072v-4.033h13.312V37.78z M72.072,32.536v-4.034h13.312v4.034H72.072z" />
@@ -111,6 +117,7 @@ export default function Socials() {
     { icon: AmazonMusicIcon, label: 'Amazon Music', url: 'https://music.amazon.com/artists/B0H1NC7B4M/malcon' },
     { icon: AudiomackIcon, label: 'Audiomack', url: 'https://audiomack.com/malcon-28' },
     { icon: DeezerIcon, label: 'Deezer', url: 'https://www.deezer.com/es/artist/391835081' },
+    { icon: AppleMusicIcon, label: 'Apple Music', url: 'https://music.apple.com/ar/artist/malcon/1895073069' },
   ]
   
   return (
@@ -137,9 +144,11 @@ export default function Socials() {
               key={social.label}
               ref={el => iconsRef.current[i] = el}
               href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label={social.comingSoon ? `${social.label} - Próximamente` : `Seguinos en ${social.label}`}
               aria-disabled={social.comingSoon}
-              className={`group relative flex flex-col items-center gap-4 ${social.comingSoon ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`group relative flex flex-col items-center gap-4 last:col-start-2 ${social.comingSoon ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-malcon-red/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
