@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /assets/
 
-Sitemap: https://malconmusica.vercel.app/sitemap.xml
+Sitemap: https://www.malconmusica.com/sitemap.xml
