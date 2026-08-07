@@ -75,8 +75,6 @@ export default function Hero() {
       aria-labelledby="hero-title"
       className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-malcon-bg pointer-events-none" />
-      
       <div 
         ref={logoRef}
         className="mb-6 sm:mb-8 opacity-0 scale-50"

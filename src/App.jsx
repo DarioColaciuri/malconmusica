@@ -23,10 +23,8 @@ export default function App() {
       
       <main id="main-content" className="relative z-10">
         <Hero />
-        <div className="fixed bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-malcon-bg to-transparent pointer-events-none z-20" />
         <NewRelease />
         <Bio />
-        <div className="fixed top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-malcon-bg to-transparent pointer-events-none z-20" />
         <Socials />
       </main>
     </div>

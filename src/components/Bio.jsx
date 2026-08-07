@@ -75,8 +75,6 @@ export default function Bio() {
       aria-labelledby="bio-title"
       className="relative min-h-[80vh] flex flex-col items-center justify-center py-16 sm:py-20 px-4 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-malcon-bg/20 to-malcon-bg pointer-events-none" />
-      
       <h2
         id="bio-title"
         ref={titleRef}
