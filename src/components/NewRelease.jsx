@@ -10,13 +10,14 @@ export default function NewRelease() {
   const titleRef = useRef()
   const cardRef = useRef()
   const card2Ref = useRef()
+  const card3Ref = useRef()
   const glowRef = useRef()
   
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     
     if (prefersReducedMotion) {
-      gsap.set([titleRef.current, cardRef.current, card2Ref.current], { opacity: 1, y: 0, scale: 1 })
+      gsap.set([titleRef.current, cardRef.current, card2Ref.current, card3Ref.current], { opacity: 1, y: 0, scale: 1 })
       return
     }
     
@@ -66,6 +67,24 @@ export default function NewRelease() {
             trigger: sectionRef.current,
             start: 'top 65%',
             end: 'top 35%',
+            scrub: 1
+          }
+        }
+      )
+      
+      gsap.fromTo(card3Ref.current,
+        { opacity: 0, y: 80, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          delay: 0.3,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 60%',
+            end: 'top 30%',
             scrub: 1
           }
         }
@@ -195,6 +214,55 @@ export default function NewRelease() {
             
             <a 
               href="https://open.spotify.com/intl-es/track/3VN6TAfz1CQZc3MPgaKIau?si=21fe4dbc627a4af7" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block w-full mt-4 sm:mt-6 py-3 sm:py-4 bg-gradient-to-r from-malcon-red to-malcon-orange-dark rounded-lg font-inter font-medium text-white uppercase tracking-wider text-xs sm:text-sm hover:opacity-90 transition-opacity text-center group-hover:scale-[1.02] transition-transform"
+            >
+              Escuchar Ahora
+            </a>
+          </div>
+        </div>
+      </article>
+      
+      <article 
+        ref={card3Ref}
+        className="glassmorphism rounded-2xl p-1 w-full box-glow group"
+      >
+        <div className="relative bg-gradient-to-br from-malcon-bg/80 to-malcon-bg/40 rounded-xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-malcon-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          <div className="relative p-4 sm:p-8">
+            <div className="flex items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+              <a 
+                href="https://open.spotify.com/intl-es/track/5u5Bwzd8RnUueCgliv6yVE?si=a6084b3f054a4125" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-300 flex-shrink-0 block"
+              >
+                <img 
+                  src="https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02700bb7deeb85307a68543625" 
+                  alt="Mil Horas - Corazon - MALCON"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1" fill="white" />
+                </div>
+              </a>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bebas text-malcon-gray tracking-wide">Mil Horas - Corazon</h3>
+                <p className="text-malcon-gray/60 text-xs sm:text-sm mt-1">MALCON • 2026</p>
+              </div>
+            </div>
+            
+            <div className="space-y-2 sm:space-y-3">
+              <div className="h-2.5 sm:h-3 bg-malcon-gray/10 rounded-full overflow-hidden">
+                <div className="h-full w-full bg-gradient-to-r from-malcon-red to-malcon-orange-dark rounded-full" />
+              </div>
+              <p className="text-malcon-gray/50 text-xs sm:text-sm text-center">Escuchalo en Spotify</p>
+            </div>
+            
+            <a 
+              href="https://open.spotify.com/intl-es/track/5u5Bwzd8RnUueCgliv6yVE?si=a6084b3f054a4125" 
               target="_blank" 
               rel="noopener noreferrer"
               className="block w-full mt-4 sm:mt-6 py-3 sm:py-4 bg-gradient-to-r from-malcon-red to-malcon-orange-dark rounded-lg font-inter font-medium text-white uppercase tracking-wider text-xs sm:text-sm hover:opacity-90 transition-opacity text-center group-hover:scale-[1.02] transition-transform"
